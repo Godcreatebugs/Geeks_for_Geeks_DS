@@ -14,25 +14,39 @@ public:
 
 //mind you-- you just have key and hence a full blown O(n) check is needed from beginning
 void DeleteElement(Node** head_ref,int key){
-  //int key has to be deleted
-  //tmp stores a pointer and *head_ref is an address
-  //Hence tmp is a pointer pointing to address of pointer pointing to head node(basically first pointer)
-Node* tmp = *head_ref;
-Node* previous;
-  //checking that if we only have 1 node and the data in their is key
-  if (tmp != NULL && tmp->data ==key){
-    //and if that is the case where on the first element we have key we change the head node's pointers
-    *head_ref = tmp->next; //moving temporary to head_refs
-    free(tmp);
-    return; //I think this is the half way and we should have considered putting the head_ref to second element in linkedlist
-  }
+// creating a tmp vaiable which hold head_pointers value to naviagte
+// and to delete the elemnt we also need previous_node value
+Node* tmp = *head_ref; // *head_ref is derefrencing the head_ref and this gives us head_pointer pointing to very first element
+Node* previous; //to link previous to next and here we know where we are
 
+//if condition if we have found the key on the first node then we dont have to iterate through while loop
+if (tmp!=NULL && tmp->data==key){
+  //tmp and head_pointer are both pointing in the same direcction
+    *head_ref= tmp->next;// Head pointer will move towards the next element
+    free(tmp); //delete temp pointer
+    return;
+    // Dont have idea wether that deletes actual node or not
+}//if
+
+while (tmp !=NULL  && tmp->data==key){
+  prev = tmp // moving temp to previous and temp to ahead
+  temp =temp->next;
+}
+if (tmp ==NULL) return; // if we havent found the key and reached at the end of linkedlist
+//or else we have found key then you unlink tmp and free it and previous should point to next element in linkedlist
+prev->next = tmp->next;
+free(tmp);//free up tmp pointer
 
 }
 
+//print function for the pointer
 void PrintList(Node *n){
   while (n->next !=NULL) {
     cout<<n->data;
     n = n->next;
   }
+}
+
+int main(){
+  
 }
