@@ -17,32 +17,46 @@ This is the disadvantage of linkedlist.
 //Add a new Node at front
 
 void Push(Node **head_ref,int new_data){
-   //this is a four step process and head_ref is pointer to the address of head Node
-   Node *new_node =new Node(); //memory allocated on heap for the new_node
-   new_node->data = new_data;//data is set as new_data
-   new_node->next = *head_ref;
-   *head_ref = new_node;
-   /*it is a little complicated but first 2 steps are understandable which translates to that I am allocating
-   memory on the heap and modified its data using function parameter
-   head_ref must be understood through and head_ref is a pointer to the address of head and here is how we use it
-   ---> We derefrence the pointer to get the address of head pointer and which contains the address of first node
-   so first process is to point our next attribute of new_node to first element of linkedlist
-   and now we the address of now the new_node should point to head_refs address
-    Damn! thats slick AF
-   */
+  // **head_ref is basically a pointer to pointer and derefrence of head_ref leads us to same pointer as head_pointer aka first pointer
+  // we have to make a new Node for incoming node and insert data for the same
+
+  Node* new_node = new Node(); //space on the heap for new_node
+  new_node->data = new_data; // data is inserted in the node
+  new_node->next = *head_ref; //means you put new_node's next to where head was pointing first and that is of course older first Element
+  *head_ref = new_node; // and head_ref should point to new_node
+ //This is Slick AF and runs into O(1).
 }
 
-void AddBetween(Node *previous_node, int new_data){
-   if (previous_node == NULL){
-     cout<<"previous node can't be null. ";
-     return;
-   }
-   Node* new_node = new Node();//allocating memory for Node on heap
-   new_node->data = new_data;//data has been Given
-   new_node->next = previous_node->next; //first making link between new_node and next via previous_node attribute is important
-    previous_node->next = new_node;
+void AddBetween(Node* previous_node,int new_data){
+  //if a null linkedlist
+  if(previous_node ==NULL){
+    cout<<"This is null linkedlist and cannot add elemnts,refer to push method. ";
+    //DOUBT:: Technically we can as we just have to add this as a new_node...
+    return;
+  }
+  Node *new_node = new Node(); //allocating new_node on heap
+  new_node->data = new_data; //data allocated
+  new_node->next = previous_node->next; //the nect element of new_node will be previous_node's next Node
+  previous_node->next = new_node; //and previous_node has been directed to new_node
+
 }
 
+void Append(Node** head_ref,int new_data){
+  //this is O(n) operation as we have to loop through untill we reach last Element
+  Node* new_node = new Node(); //allocated memory on heap for Node object
+  new_node->data = new_data; //new_node has a data now
+  new_node->next = NULL; //last element point to NULL
+  //considering possibility that linkedlist  is null and the operation is failed same case as AddBetween
+  if (*head_ref == NULL){
+    cout<<"linkedlist is empty and this operation is invalid please consdider. ";
+    return;
+  }
+  Node* last =*head_ref;
+  while(last->next !=NULL){
+    last =last->next;
+  }
+  last->next =new_node;
+}
 void Append(Node** head_ref,int new_data){ //this is O(n) process but we can make it O(1)
   Node* new_node = new Node();//allocating memory on heap for new_node
   new_node->data = new_data; //allocating new_data

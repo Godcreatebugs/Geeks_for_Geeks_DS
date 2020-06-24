@@ -69,8 +69,22 @@ void Append(Node** head_ref,int new_data){
     new_node->previous = last;
 
    //Done with O(1)
-
-
+}
+//4th Add an elemnt before some Node
+void AddBefore(Node* next_node, int new_data){
+  // This is basically an advantage of bidirection
+  // In singly linkedlist we can not do that
+  Node *new_node  = new Node(); //allocating space for new_element
+  new_node->data = new_data; //data is given
+  if (next_node == NULL){
+     return;
+     // You can not add before either first element or NULL as we have a seperate element for that
+  }
+  Node* previous_node = next_node->previous ; //identify previous_node before editing
+  new_node->next = next_node; // new_node should point to next_node in forward
+  next_node->previous = new_node; // next_node should point at new_node in backward
+  new_node->previous = previous_node; // new_node should point to previous_node in backward
+  previous_node->next = new_node;// previous_node should point to new_node
 }
 void PrintNode(Node *n){
   while (n !=NULL){
@@ -107,5 +121,7 @@ int main(){
     AddAfter(first,3);
     PrintNode(head);
     Append(&head,-6);
+    PrintNode(head);
+    AddBefore(head,-5);
     PrintNode(head);
 }
