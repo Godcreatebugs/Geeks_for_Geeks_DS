@@ -16,6 +16,8 @@ Node* NewNode(int new_data){
      return new_node;
 }
 
+// this is recursion solution and takes a lot of time(O(1)) but space taken is humongous.O(n) if we consider call size of the function then
+// we have O(n) otherwise O(1).  
 /*
 Unlike arrays and linkedlist trees are heirarchial DS and can be traversed in different ways.
 -> 3 ways are preorder,postorder and inorder
