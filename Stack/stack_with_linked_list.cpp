@@ -11,13 +11,14 @@ public:
 //methods for stacknode class
 
 //make a new node AGAIN METHOD NOT NEEDED BUT MAKES PUSH OP EASY
+//You also could have used a default constructor...
 StackNode* NewNode(int new_data){
   StackNode* new_node = new StackNode(); // allocating memory
   new_node->data = new_data;
   new_node->next = NULL;
   return new_node;
 }
-//push op and unlike array it never goes out of limit
+//push op and unlike array it never goes out of limit-Advantage
 void Push(StackNode** root,int new_data){
 //pointer to root is basically last to last poiner cuz last pointer points to not exactly NUll and that makes it intersting
   StackNode* new_root = NewNode(new_data); //use of NewNode Method
@@ -33,7 +34,7 @@ int Pop(StackNode** root){ //address of root
     //remember to delete an element we need   temp node and then we can free temp
     StackNode* temp = *root; //pointer of last Node is given to temp
     temp->next =
-    return -1; 
+    return -1;
 }
 int Top(StackNode* root){
   if (root == NULL) return -1;
