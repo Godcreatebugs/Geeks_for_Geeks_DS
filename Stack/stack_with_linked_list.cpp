@@ -3,41 +3,100 @@
 
 using namespace std;
 
-class StackNode{
-public:
-  int data;
-  StackNode* next;
+
 
 //methods for stacknode class
 
-//make a new node AGAIN METHOD NOT NEEDED BUT MAKES PUSH OP EASY
+//make a new node AGAIN METHOD NOT NEEDED BUT MAKES PUSH POP EASY
 //You also could have used a default constructor...
-StackNode* NewNode(int new_data){
-  StackNode* new_node = new StackNode(); // allocating memory
-  new_node->data = new_data;
-  new_node->next = NULL;
-  return new_node;
-}
-//push op and unlike array it never goes out of limit-Advantage
-void Push(StackNode** root,int new_data){
-//pointer to root is basically last to last poiner cuz last pointer points to not exactly NUll and that makes it intersting
-  StackNode* new_root = NewNode(new_data); //use of NewNode Method
-  // now consider root as a head_ref and cuz pointer at the root may or may not  be NULL and null at new_root and NULL
-  //at root are different and this makes this one intersting, SO implement  it as it is head_ref
-  new_root->next = *root; //THE REASON ITS NOT NULL IS CUZ VALUE AT ROOT POINTER MAYBE different And we can have dangling pointer
-  *root = new_root; //root has been transfered to new_root
-  cout<<new_data<<" :has been pushed."<<"\n";
+/*
+One misconception here is that the last element is pointing to null which is wrong
+it is actually other way around cuz your top changes every single time hence top pointer is a
+specially alocated pointer which changes, and root or head is actually have NULL as a value.
+Here, I am implementing using struct
+*/
+
+struct Node{
+  int data;
+  Node* next;
+};
+
+class Stack{
+public:
+  //top is not node, it is just a pointer pointing at top, make sense right?
+  struct Node* top;
+  //Push Method
+  void Push(int new_data){
+      //need temo variable as 3rd party variable
+      Node* temp;
+      temp = new Node(); //allocating memory on heap
+      //rare case but you need to include this
+      if (!temp){
+        cout<<"A rare condition that heap has no space left meaning stack overflow. "<<endl;
+        return;
+      }
+      temp->data = new_data;
+      temp->next = top;
+      top = temp;  //temp becomes the top now
+      cout<<"Operation succesful "<<new_data<<" Has been Pushed."<<endl;
+  }
+
+  void Pop(){
+    Node *temp;
+    temp = new Node();
+    if (!temp){
+      cout<<"A rare condition that heap has no space left meaning stack overflow. "<<endl;
+      return ;
+    }
+    if (top == NULL){
+      cout<<"Stack Underflow."<<endl;
+      return ;
+    }
+    temp = top;
+    cout <<temp->data <<"is poped out. "<<endl;
+    top = top->next; //most imporatnt step as we have stepped doen top
+    free(temp); //free memory
+
+  }
+// Peek/Top Function
+  int Top(){
+    if (top == NULL){
+      cout<<"Stack Underflow. Invalid Operation. "<<endl;
+      return -1;
+    }
+    cout<<top->data<<endl;
+    return top->data;
+  }
+//isEmpty() Function
+bool isEmpty(){
+  return top==NULL;
 }
 
-int Pop(StackNode** root){ //address of root
-    if (*root==NULL) return -1;
-    //remember to delete an element we need   temp node and then we can free temp
-    StackNode* temp = *root; //pointer of last Node is given to temp
-    temp->next =
-    return -1;
+//print the stack
+
+void PrintStack(){
+  Node* temp;//a temporary node to navigate through stack
+  temp = top;
+  if (top ==NULL) {
+    cout<<"No elements in the satck."<<endl;
+    return;
+  }
+  while(temp !=NULL){
+    cout<<temp->data;
+    temp = temp->next;
 }
-int Top(StackNode* root){
-  if (root == NULL) return -1;
-  return root->data;
+
 }
 };
+int main(){
+
+  Stack S;
+  S.Push(1);
+  S.Push(2);
+  S.Push(3);
+  S.Push(4);
+  S.Top();
+  S.Pop();
+  S.isEmpty();
+  S.PrintStack();
+}
