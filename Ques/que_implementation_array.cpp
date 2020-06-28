@@ -17,12 +17,12 @@ one at the back and one at the front to keep track record.
 class Queue{
 public:
   int front,rear,size;
-  unsigned capacity; //IDK why unsigned
+  int capacity; //IDK why unsigned
   int* array; //another implementation of array
   //as always you can use constructor or function to make a Queue
   //function can deal with pointers and hence is memory efficient
 
- Queue* MakeQueue (unsigned capacity){
+ Queue* MakeQueue (int capacity){
    Queue* queue =  new Queue(); // allocating space for que
     queue->capacity = capacity; // capacity assigned
     queue->front= queue->rear = 0 ;// both pointers start at 0.
@@ -32,7 +32,7 @@ public:
  }
 
 bool isFull(Queue* queue){
-  return queue->size == queue->capacity;
+  return (queue->size == queue->capacity);
 }
 
 bool isEmpty(Queue* queue){
@@ -52,7 +52,7 @@ int Back(Queue* queue){
 // void as in we just need to join the element and for deque we need return int
 void EnQue(Queue* queue, int data){
     //check wether you are going out of size, we call it que overflow
-    if (isFull(queue)) return;
+    //if (isFull(queue)) return;
     queue->array[++size] = data;//data enqued
     front++;
     cout<<data<<"enqued in que";
@@ -61,7 +61,10 @@ void EnQue(Queue* queue, int data){
 };
 
 int main(){
-  Queue Q; //amking an object
-  Q.MakeQueue(5);
+  Queue *queue; //making an object
+  queue->MakeQueue(5);
+  queue->EnQue(queue,5);
+  queue->Front(queue);
+
 
 }
