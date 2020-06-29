@@ -85,18 +85,17 @@ void EnQue(Queue* queue, int data){
     cout<<data<<" has been enqued. "<<endl;
 };
 
-int DeQue(Queue* queue){
+void DeQue(Queue* queue){
     if (isEmpty(queue)) {
       cout<<"Queue is already empty. "<<endl;
-      return -1;
+      return ;
     }
     //front has been moved one index begind
     //The reason there is  front + 1 bcz front pointer points at begining of array and we have to move it forward
-    int iteam = queue->array[queue->front];
+    //int iteam = queue->array[queue->front];
     queue->front = (queue->front + 1) % queue->capacity;
-    cout<<iteam<<" has been dequed. "<<endl;
+    //cout<<iteam<<" has been dequed. "<<endl;
     queue->size--;
-    return iteam;
 
 }
 };
