@@ -25,46 +25,90 @@ public:
  Queue* MakeQueue (int capacity){
    Queue* queue =  new Queue(); // allocating space for que
     queue->capacity = capacity; // capacity assigned
-    queue->front= queue->rear = 0 ;// both pointers start at 0.
-
-  queue->array = new int[sizeof(int) * queue->capacity];
+    //indexing starts from 0 and hence rear is where we deque
+    queue->front = queue->size = 0 ;// intial size is 0 and front is 0 as well
+    //This is a peculiar move to assign a rear pointer to right most element of the array but enque and deque ops will make sense.
+    queue->rear  = queue->capacity - 1;//size
+    queue->array = new int[sizeof(int) * queue->capacity]; // array size has been allocated and this is fixed size which dont go beyond capacity
   return queue;
  }
 
 bool isFull(Queue* queue){
   return (queue->size == queue->capacity);
 }
-
 bool isEmpty(Queue* queue){
   return (queue->size==0);
 }
-
+bool Back(Queue* queue){
+  if(isEmpty(queue)) return INT_MIN;
+  //you need to indexing to an array to get an element and the line below is wrong implementation
+  //return queue->front;
+    return queue->array[queue->rear];
+}
+//Front Operation
 int Front(Queue* queue){
    if (isEmpty(queue)) return INT_MIN;
-    return queue->front;
-
-}
-
-int Back(Queue* queue){
-  if(isEmpty(queue)) return INT_MIN;
-  return queue->rear;
+    //return queue->front;
+    return queue->array[queue->front];
 }
 // void as in we just need to join the element and for deque we need return int
 void EnQue(Queue* queue, int data){
-    //check wether you are going out of size, we call it que overflow
-    //if (isFull(queue)) return;
-    queue->array[++size] = data;//data enqued
-    front++;
-    cout<<data<<"enqued in que";
-}
+    /*
+    FIRST ENQUE WILL START AT REAR AS WE KNOW THAT WE ATTACH ELEMENT AT REAR END IN QUE
+    So, que->array[que->rear] = int would have worked
+    and this has to be set as a front which is again at the begining of array before initalization
+    Now, when we again join the element (After empty array and adding one element) we want to join the element after the front but doing same op
+    once again hasn't changed the rear yet and that is why it wont work
+    [ , , , ,  ]
+     |Front   |Rear
+     after adding element
+     [ 1, , , , ]
+      |Front = Rear = Array shown
+      [ 1,2,     3, , ]
+        |Front    |Rear
+   //front has stayed at the same place meaning dequeing happens from indexing 0 , makes it valid op
 
+    [ 3,      2 ,  , , ,]
+      |Rear   |Front
+
+    and this can be implemented using circular thing.
+    */
+ // if capacity is full you cant enque
+    if (isFull(queue)){
+      cout<<"Que is full, capacity reached. "<<endl;
+      return;
+    }
+    //joining happens at rear and AT THE BEGINING OF ARRAY
+    queue->rear = (queue->rear +1)  % queue->capacity;
+    queue->array[queue->rear] = data;
+    queue->size ++;
+    cout<<data<<" has been enqued. "<<endl;
 };
 
-int main(){
-  Queue *queue; //making an object
-  queue->MakeQueue(5);
-  queue->EnQue(queue,5);
-  queue->Front(queue);
+int DeQue(Queue* queue){
+    if (isEmpty(queue)) {
+      cout<<"Queue is already empty. "<<endl;
+      return -1;
+    }
+    //front has been moved one index begind
+    //The reason there is  front + 1 bcz front pointer points at begining of array and we have to move it forward
+    int iteam = queue->array[queue->front];
+    queue->front = (queue->front + 1) % queue->capacity;
+    cout<<iteam<<" has been dequed. "<<endl;
+    queue->size--;
+    return iteam;
 
+}
+};
+int main(){
+
+  Queue q; //making an object
+  Queue* queue = &q;
+  queue->MakeQueue(5);
+  queue->EnQue(queue,1);
+  queue->EnQue(queue,2);
+  queue->EnQue(queue,3);
+  queue->DeQue(queue);
+  // queue->Front(queue);
 
 }
